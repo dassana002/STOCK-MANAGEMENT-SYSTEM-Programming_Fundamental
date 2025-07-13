@@ -25,7 +25,55 @@ class Coursework {
     }
 
     public static void supplier_Manage() {
-        
+        Scanner input = new Scanner(System.in);
+		
+		clearConsole();
+		
+		System.out.println("+--------------------------------------------------------------------------+");
+		System.out.println("|                         SUPLIAR MANAGE                                   |");
+		System.out.println("+--------------------------------------------------------------------------+\n");
+		
+		System.out.println("[1] Add Suppliar\t [2] Update Suppliar");
+		System.out.println("[3] Delete Suppliar\t [4] View Suppliar");
+		System.out.println("[5] Search Suppliar\t [6] Home page\n");
+
+        while(true){
+			System.out.print("Enter an option to continue > ");
+			int option = input.nextInt();
+			
+			switch (option) {
+				case 1 -> addSupplier();
+				case 2 -> updateSupplier();
+				case 3 -> deleteSupplier();
+				case 4 -> viewSupplier();
+				case 5 -> searchSupplier();
+				case 6 -> home();
+				default -> {
+                    System.out.println("Invalid option!\n");
+                    continue;
+                }
+			} 
+		}	
+    }
+
+    private static void searchSupplier() {
+    
+    }
+
+    private static void viewSupplier() {
+    
+    }
+
+    private static void deleteSupplier() {
+    
+    }
+
+    private static void updateSupplier() {
+    
+    }
+
+    private static void addSupplier() {
+    
     }
 
     public static void change_The_Credentials() {
@@ -152,6 +200,6 @@ class Coursework {
         // login();
         // home();
         // change_The_Credentials();
-        exit_the_System();
+        supplier_Manage();
     }
 }
