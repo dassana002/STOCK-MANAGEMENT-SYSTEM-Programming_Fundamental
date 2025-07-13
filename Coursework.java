@@ -23,7 +23,7 @@ class Coursework {
     }
 
     public static void ungrow_supplier(String id) {
-        String[][] temp = new String[supplier.length-1][2];
+        String[][] temp = new String[supplier.length - 1][2];
 
         int j = 0;
         for (int i = 0; i < supplier.length; i++) {
@@ -31,11 +31,11 @@ class Coursework {
                 j++;
                 continue;
             }
-            temp[i-j][0] = supplier[i][0];
-            temp[i-j][1] = supplier[i][1];
+            temp[i - j][0] = supplier[i][0];
+            temp[i - j][1] = supplier[i][1];
         }
         supplier = temp;
-        
+
     }
 
     public static void update_Supplier_Name(String name, String new_name) {
@@ -46,7 +46,7 @@ class Coursework {
         }
     }
 
-    public static String supplirName_by_Id(String id) {
+    public static String getSupplier_by_Id(String id) {
         for (int i = 0; i < supplier.length; i++) {
             if (supplier[i][0].equals(id)) {
                 return supplier[i][1];
@@ -129,7 +129,41 @@ class Coursework {
     }
 
     public static void searchSupplier() {
+        Scanner input = new Scanner(System.in);
 
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                             SEARCH SUPPLIER                              |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        L1: while (true) {
+            System.out.print("Supplier ID: ");
+            String id = input.nextLine();
+
+            boolean is_exist_id = is_exist_supplier_id(id);
+
+            if (is_exist_id) {
+                System.out.println("Supplier Name: " + getSupplier_by_Id(id));
+
+                L2:while (true) {
+                    System.out.print("successfully !. Do you want to search another supplier (Y/N) > ");
+                    char option = input.next().charAt(0);
+    
+                    switch (option) {
+                        case 'y', 'Y' -> searchSupplier();
+                        case 'n', 'N' -> supplier_Manage();
+                        default -> {
+                            System.out.println("You entered the wrong option. Please correct the option again!\n");
+                            continue L2;
+                        }
+                    }
+                }
+            } else {
+                System.out.println("can not find supplier id. try again!\n");
+                continue L1;
+            }
+        }
     }
 
     public static void viewSupplier() {
@@ -191,7 +225,7 @@ class Coursework {
             boolean is_exist_id = is_exist_supplier_id(id);
 
             if (is_exist_id) {
-                String name = supplirName_by_Id(id);
+                String name = getSupplier_by_Id(id);
                 System.out.println("Supplier name: " + name + "\n");
 
                 System.out.print("Enter the new supplier name: ");
