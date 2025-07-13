@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 class Coursework {
@@ -117,7 +116,7 @@ class Coursework {
                 case 1 -> addSupplier();
                 case 2 -> updateSupplier();
                 case 3 -> deleteSupplier();
-                case 4 -> viewSupplier();
+                // case 4 -> viewSupplier();
                 case 5 -> searchSupplier();
                 case 6 -> home();
                 default -> {
@@ -146,10 +145,10 @@ class Coursework {
             if (is_exist_id) {
                 System.out.println("Supplier Name: " + getSupplier_by_Id(id));
 
-                L2:while (true) {
+                L2: while (true) {
                     System.out.print("successfully !. Do you want to search another supplier (Y/N) > ");
                     char option = input.next().charAt(0);
-    
+
                     switch (option) {
                         case 'y', 'Y' -> searchSupplier();
                         case 'n', 'N' -> supplier_Manage();
@@ -166,9 +165,9 @@ class Coursework {
         }
     }
 
-    public static void viewSupplier() {
+    // public static void viewSupplier() {
 
-    }
+    // }
 
     public static void deleteSupplier() {
         Scanner input = new Scanner(System.in);
@@ -366,6 +365,55 @@ class Coursework {
     }
 
     public static void stock_Manage() {
+        Scanner input = new Scanner(System.in);
+		
+		clearConsole();
+		
+		System.out.println("+------------------------------------------------------------------------+");
+		System.out.println("|                            STOCK MANAGEMENT                            |");
+		System.out.println("+------------------------------------------------------------------------+");
+		
+		System.out.println("[1] Manage Item Categories\t [2] Add Item");
+		System.out.println("[3] Get Item Suppliar Wise\t [4] View Item");
+		System.out.println("[5] Rank Item Per Unit Price\t [6] Home Page\n");
+
+        while(true){
+			System.out.print("Enter an option to continue > ");
+			int option = input.nextInt();
+			
+			switch (option) {
+				case 1 -> manageItemCategories();
+				case 2 -> add_Item();
+				case 3 -> getItemSupplierWise();
+				case 4 -> view_Item();
+				case 5 -> ItemPerUnitPrice();
+				case 6 -> home();
+				default -> {
+                    System.out.println("Invalid option! Please try again.\n");
+                    continue;
+                }
+			} 
+		}
+    }
+
+    public static void view_Item() {
+    
+    }
+
+    public static void ItemPerUnitPrice() {
+    
+    }
+
+    public static void getItemSupplierWise() {
+    
+    }
+
+    public static void add_Item() {
+    
+    }
+
+    public static void manageItemCategories() {
+        
 
     }
 
@@ -437,6 +485,6 @@ class Coursework {
 
     public static void main(String[] args) {
         // login();
-        supplier_Manage();
+        stock_Manage();
     }
 }
