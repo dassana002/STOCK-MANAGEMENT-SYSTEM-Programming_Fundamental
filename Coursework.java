@@ -1,9 +1,11 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 class Coursework {
     static String user_Name = "1234";
     static String user_Password = "1234";
-    static String[][] supplier = new String[0][2];
+    static String [][]supplier = new String[0][2];
+    static String []category = new String[0];
 
     public static final void clearConsole() {
         final String os = System.getProperty("os.name");
@@ -19,6 +21,32 @@ class Coursework {
         } catch (final Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public static void grow_category(String name){
+        String []temp = new String[category.length+1];
+
+        for (int i = 0; i < category.length; i++) {
+            temp[i] = category[i];
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i] == null) {
+                temp[i] = name;
+            }
+        }
+
+        category = temp;
+        System.out.println(Arrays.deepToString(category));
+    }
+
+    public static boolean is_exist_category(String name) {
+        for (int i = 0; i < category.length; i++) {
+            if (category[i].equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void ungrow_supplier(String id) {
@@ -366,90 +394,126 @@ class Coursework {
 
     public static void stock_Manage() {
         Scanner input = new Scanner(System.in);
-		
-		clearConsole();
-		
-		System.out.println("+------------------------------------------------------------------------+");
-		System.out.println("|                            STOCK MANAGEMENT                            |");
-		System.out.println("+------------------------------------------------------------------------+");
-		
-		System.out.println("[1] Manage Item Categories\t [2] Add Item");
-		System.out.println("[3] Get Item Suppliar Wise\t [4] View Item");
-		System.out.println("[5] Rank Item Per Unit Price\t [6] Home Page\n");
 
-        while(true){
-			System.out.print("Enter an option to continue > ");
-			int option = input.nextInt();
-			
-			switch (option) {
-				case 1 -> manageItemCategories();
-				case 2 -> add_Item();
-				case 3 -> getItemSupplierWise();
-				case 4 -> view_Item();
-				case 5 -> ItemPerUnitPrice();
-				case 6 -> home();
-				default -> {
-                    System.out.println("Invalid option! Please try again.\n");
+        clearConsole();
+
+        System.out.println("+------------------------------------------------------------------------+");
+        System.out.println("|                            STOCK MANAGEMENT                            |");
+        System.out.println("+------------------------------------------------------------------------+");
+
+        System.out.println("[1] Manage Item Categories\t [2] Add Item");
+        System.out.println("[3] Get Item Suppliar Wise\t [4] View Item");
+        System.out.println("[5] Rank Item Per Unit Price\t [6] Home Page\n");
+
+        while (true) {
+            System.out.print("Enter an option to continue > ");
+            char option = input.next().charAt(0);
+
+            switch (option) {
+                case '1' -> manageItemCategories();
+                case '2' -> add_Item();
+                case '3' -> getItemSupplierWise();
+                case '4' -> view_Item();
+                case '5' -> ItemPerUnitPrice();
+                case '6' -> home();
+                default -> {
+                    System.out.println("Invalid option! Please try again.");
                     continue;
                 }
-			} 
-		}
+            }
+        }
     }
 
     public static void view_Item() {
-    
+
     }
 
     public static void ItemPerUnitPrice() {
-    
+
     }
 
     public static void getItemSupplierWise() {
-    
+
     }
 
     public static void add_Item() {
-    
+
     }
 
     public static void manageItemCategories() {
         Scanner input = new Scanner(System.in);
-		
-		clearConsole();
-		
-		System.out.println("+--------------------------------------------------------------------------+");
-		System.out.println("|                           MANAGE ITEM CATEGORY                           |");
-		System.out.println("+--------------------------------------------------------------------------+\n");
 
-		System.out.println("[1] Add New Item Category\t [2] Delete Item Category");
-		System.out.println("[3] Update Item Category\t [4] Stock Management");
+        clearConsole();
 
-        while(true){
-			System.out.print("\nEnter an option to continue > ");
-			int option = input.nextInt();
-			
-			switch (option) {
-				case 1 -> AddNewItem_Category();
-				case 2 -> DeleteItem_Category();
-				case 3 -> UpdateItem_Category();
-				case 4 -> stock_Manage();
-				default -> System.out.println("Invalid option!");
-				
-			} 
-		}
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                           MANAGE ITEM CATEGORY                           |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        System.out.println("[1] Add New Item Category\t [2] Delete Item Category");
+        System.out.println("[3] Update Item Category\t [4] Stock Management");
+
+        while (true) {
+            System.out.print("\nEnter an option to continue > ");
+            char option = input.next().charAt(0);
+
+            switch (option) {
+                case '1' -> addNewItem_Category();
+                case '2' -> deleteItem_Category();
+                case '3' -> updateItem_Category();
+                case '4' -> stock_Manage();
+                default -> {
+                    System.out.println("Invalid option!");
+                    continue;
+                }
+            }
+        }
+    }
+
+    public static void updateItem_Category() {
 
     }
 
-    public static void UpdateItem_Category() {
-    
+    public static void deleteItem_Category() {
+
     }
 
-    public static void DeleteItem_Category() {
-    
-    }
+    public static void addNewItem_Category() {
+        Scanner input = new Scanner(System.in);
 
-    public static void AddNewItem_Category() {
-    
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                            ADD ITEM CATEGORY                             |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        L1: while (true) {
+            System.out.print("Add new Item category: ");
+            String name = input.nextLine();
+
+            boolean is_exist_category = is_exist_category(name);
+
+            if (!is_exist_category) {
+                
+                grow_category(name);
+
+                L2:while (true) {
+                    System.out.print("added successfully! Do you want to add another category (Y/N)? ");
+                    char option = input.next().charAt(0);
+
+                    switch (option) {
+                        case 'y', 'Y' -> addNewItem_Category();
+                        case 'n', 'N' -> stock_Manage();
+                        default -> {
+                            System.out.println("Invalid option!\n");
+                            continue L2;
+                        }
+                    }
+                }
+            } else {
+                System.out.println("Already exist. try again!\n");
+                continue L1;
+            }
+        }
     }
 
     public static void home() {
