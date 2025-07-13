@@ -22,6 +22,22 @@ class Coursework {
         }
     }
 
+    public static void ungrow_supplier(String id) {
+        String[][] temp = new String[supplier.length-1][2];
+
+        int j = 0;
+        for (int i = 0; i < supplier.length; i++) {
+            if (supplier[i][0].equals(id)) {
+                j++;
+                continue;
+            }
+            temp[i-j][0] = supplier[i][0];
+            temp[i-j][1] = supplier[i][1];
+        }
+        supplier = temp;
+        
+    }
+
     public static void update_Supplier_Name(String name, String new_name) {
         for (int i = 0; i < supplier.length; i++) {
             if (supplier[i][1].equals(name)) {
@@ -121,7 +137,42 @@ class Coursework {
     }
 
     public static void deleteSupplier() {
+        Scanner input = new Scanner(System.in);
 
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                              DELETE SUPPLIER                             |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        L1: while (true) {
+            System.out.print("Supplier Id: ");
+            String id = input.nextLine();
+
+            boolean is_exist_id = is_exist_supplier_id(id);
+
+            if (is_exist_id) {
+                ungrow_supplier(id);
+
+                L2: while (true) {
+                    System.out.print("delete successfully! . Do you want to delete another? (Y/N)");
+                    char option = input.next().charAt(0);
+
+                    switch (option) {
+                        case 'y', 'Y' -> deleteSupplier();
+                        case 'n', 'N' -> supplier_Manage();
+                        default -> {
+                            System.out.println("You entered the wrong option. Please correct the option again!\n");
+                            continue L2;
+                        }
+                    }
+                }
+
+            } else {
+                System.out.println("Can not find supplier id. try again!\n");
+                continue L1;
+            }
+        }
     }
 
     public static void updateSupplier() {
