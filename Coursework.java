@@ -2,8 +2,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 class Coursework {
-    static String user_Name = "Dassana";
-    static String user_Password = "Dassana@123";
+    static String user_Name = "1234";
+    static String user_Password = "1234";
     static String[][] supplier = new String[0][2];
 
     public static final void clearConsole() {
@@ -20,6 +20,23 @@ class Coursework {
         } catch (final Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public static void update_Supplier_Name(String name, String new_name) {
+        for (int i = 0; i < supplier.length; i++) {
+            if (supplier[i][1].equals(name)) {
+                supplier[i][1] = new_name;
+            }
+        }
+    }
+
+    public static String supplirName_by_Id(String id) {
+        for (int i = 0; i < supplier.length; i++) {
+            if (supplier[i][0].equals(id)) {
+                return supplier[i][1];
+            }
+        }
+        return id;
     }
 
     public static boolean is_exist_supplier_id(String id) {
@@ -43,6 +60,12 @@ class Coursework {
     public static void grow_Supplier(String id, String name) {
         String[][] temp = new String[supplier.length + 1][2];
 
+        for (int i = 0; i < supplier.length; i++) {
+            for (int j = 0; j < supplier[i].length; j++) {
+                temp[i][j] = supplier[i][j];
+            }
+        }
+
         for (int i = 0; i < temp.length; i++) {
             if (temp[i][0] == null) {
                 temp[i][0] = id;
@@ -50,6 +73,7 @@ class Coursework {
             }
         }
         supplier = temp;
+
     }
 
     public static void exit_the_System() {
@@ -101,7 +125,47 @@ class Coursework {
     }
 
     public static void updateSupplier() {
+        Scanner input = new Scanner(System.in);
 
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                              UPDATE SUPPLIER                             |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        L1: while (true) {
+            System.out.print("Supplier Id: ");
+            String id = input.nextLine();
+
+            boolean is_exist_id = is_exist_supplier_id(id);
+
+            if (is_exist_id) {
+                String name = supplirName_by_Id(id);
+                System.out.println("Supplier name: " + name + "\n");
+
+                System.out.print("Enter the new supplier name: ");
+                String new_name = input.nextLine();
+
+                update_Supplier_Name(name, new_name);
+
+                L2: while (true) {
+                    System.out.print("Update successfully!. Do you want to update another supplier? (Y/n): ");
+                    char option = input.next().charAt(0);
+
+                    switch (option) {
+                        case 'y', 'Y' -> updateSupplier();
+                        case 'n', 'N' -> supplier_Manage();
+                        default -> {
+                            System.out.println("You entered the wrong option. Please correct the option again!\n");
+                            continue L2;
+                        }
+                    }
+                }
+            } else {
+                System.out.println("can not find suppiler id. try again!\n");
+                continue L1;
+            }
+        }
     }
 
     public static void addSupplier() {
@@ -139,10 +203,11 @@ class Coursework {
                                     addSupplier();
                                 }
                                 case 'n', 'N' -> {
-                                    home();
+                                    supplier_Manage();
                                 }
                                 default -> {
-                                    System.out.println("You entered the wrong option. Please correct the option again!\n");
+                                    System.out.println(
+                                            "You entered the wrong option. Please correct the option again!\n");
                                     continue L3;
                                 }
                             }
@@ -287,9 +352,6 @@ class Coursework {
 
     public static void main(String[] args) {
         // login();
-        // home();
-        // change_The_Credentials();
-        // supplier_Manage();
-        addSupplier();
+        supplier_Manage();
     }
 }
