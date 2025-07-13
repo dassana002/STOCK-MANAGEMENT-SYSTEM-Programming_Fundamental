@@ -413,8 +413,43 @@ class Coursework {
     }
 
     public static void manageItemCategories() {
-        
+        Scanner input = new Scanner(System.in);
+		
+		clearConsole();
+		
+		System.out.println("+--------------------------------------------------------------------------+");
+		System.out.println("|                           MANAGE ITEM CATEGORY                           |");
+		System.out.println("+--------------------------------------------------------------------------+\n");
 
+		System.out.println("[1] Add New Item Category\t [2] Delete Item Category");
+		System.out.println("[3] Update Item Category\t [4] Stock Management");
+
+        while(true){
+			System.out.print("\nEnter an option to continue > ");
+			int option = input.nextInt();
+			
+			switch (option) {
+				case 1 -> AddNewItem_Category();
+				case 2 -> DeleteItem_Category();
+				case 3 -> UpdateItem_Category();
+				case 4 -> stock_Manage();
+				default -> System.out.println("Invalid option!");
+				
+			} 
+		}
+
+    }
+
+    public static void UpdateItem_Category() {
+    
+    }
+
+    public static void DeleteItem_Category() {
+    
+    }
+
+    public static void AddNewItem_Category() {
+    
     }
 
     public static void home() {
