@@ -116,7 +116,6 @@ class Coursework {
             }
         }
         supplier = temp;
-
     }
 
     public static void exit_the_System() {
@@ -470,10 +469,79 @@ class Coursework {
     }
 
     public static void updateItem_Category() {
+        Scanner input = new Scanner(System.in);
+		
+		clearConsole();
+		
+		System.out.println("+--------------------------------------------------------------------------+");
+		System.out.println("|                           UPDATE ITEM CATEGORY                           |");
+		System.out.println("+--------------------------------------------------------------------------+\n");
 
     }
 
+    public static boolean is_exist_category_id(String id){
+        for (int i = 0; i < category.length; i++) {
+            if (category[i].equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void ungrow_category(String id){
+        String []temp = new String[category.length-1];
+        
+        int j = 0;
+        for (int i = 0; i < temp.length; i++) {
+            if (category[i].equals(id)) {
+                j++;
+                continue;    
+            }else{
+                temp[i-j] = category[i]; 
+            }
+
+        } 
+
+        category = temp;
+    }
+
     public static void deleteItem_Category() {
+        Scanner input = new Scanner(System.in);
+		
+		clearConsole();
+		
+		System.out.println("+--------------------------------------------------------------------------+");
+		System.out.println("|                           DELETE ITEM CATEGORY                           |");
+		System.out.println("+--------------------------------------------------------------------------+\n");
+
+        L1: while (true) {
+            System.out.print("Category name: ");
+            String id = input.nextLine();
+
+            boolean is_exist_id = is_exist_category_id(id);
+
+            if (is_exist_id) {
+                ungrow_category(id);
+
+                L2: while (true) {
+                    System.out.print("delete successfully! . Do you want to delete another? (Y/N)");
+                    char option = input.next().charAt(0);
+
+                    switch (option) {
+                        case 'y', 'Y' -> deleteItem_Category();
+                        case 'n', 'N' -> manageItemCategories();
+                        default -> {
+                            System.out.println("You entered the wrong option. Please correct the option again!\n");
+                            continue L2;
+                        }
+                    }
+                }
+
+            } else {
+                System.out.println("Can not find supplier id. try again!\n");
+                continue L1;
+            }
+        }
 
     }
 
@@ -502,7 +570,7 @@ class Coursework {
 
                     switch (option) {
                         case 'y', 'Y' -> addNewItem_Category();
-                        case 'n', 'N' -> stock_Manage();
+                        case 'n', 'N' -> manageItemCategories();
                         default -> {
                             System.out.println("Invalid option!\n");
                             continue L2;
