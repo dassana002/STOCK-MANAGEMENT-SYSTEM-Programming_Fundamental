@@ -4,8 +4,8 @@ import java.util.Scanner;
 class Coursework {
     static String user_Name = "1234";
     static String user_Password = "1234";
-    static String [][]supplier = new String[0][2];
-    static String []category = new String[0];
+    static String[][] supplier = new String[0][2];
+    static String[] category = new String[0];
 
     public static final void clearConsole() {
         final String os = System.getProperty("os.name");
@@ -23,8 +23,8 @@ class Coursework {
         }
     }
 
-    public static void grow_category(String name){
-        String []temp = new String[category.length+1];
+    public static void grow_category(String name) {
+        String[] temp = new String[category.length + 1];
 
         for (int i = 0; i < category.length; i++) {
             temp[i] = category[i];
@@ -38,15 +38,6 @@ class Coursework {
 
         category = temp;
         System.out.println(Arrays.deepToString(category));
-    }
-
-    public static boolean is_exist_category(String name) {
-        for (int i = 0; i < category.length; i++) {
-            if (category[i].equals(name)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static void ungrow_supplier(String id) {
@@ -468,60 +459,100 @@ class Coursework {
         }
     }
 
-    public static void updateItem_Category() {
-        Scanner input = new Scanner(System.in);
-		
-		clearConsole();
-		
-		System.out.println("+--------------------------------------------------------------------------+");
-		System.out.println("|                           UPDATE ITEM CATEGORY                           |");
-		System.out.println("+--------------------------------------------------------------------------+\n");
-
+    public static void update_category_name(String name, String newName) {
+        for (int i = 0; i < category.length; i++) {
+            if (category[i].equals(name)) {
+                category[i] = newName;
+            }
+        }
     }
 
-    public static boolean is_exist_category_id(String id){
+    public static void updateItem_Category() {
+        Scanner input = new Scanner(System.in);
+
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                           UPDATE ITEM CATEGORY                           |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        L1: while (true) {
+            System.out.print("Category name: ");
+            String name = input.next();
+
+            boolean is_exist = is_exist_category(name);
+
+            if (is_exist) {
+                System.out.print("New category name: ");
+                String newName = input.next();
+
+                update_category_name(name, newName);
+
+                System.out.println("Update successfully!\n");
+
+                L2: while (true) {
+                    System.out.print("Do you want to Update another category (Y/N): ");
+                    char ch = input.next().charAt(0);
+
+                    switch (ch) {
+                        case 'Y', 'y' -> updateItem_Category();
+                        case 'N', 'n' -> manageItemCategories();
+                        default -> {
+                            System.out.println("Invalid choice!");
+                            continue L2;
+                        }
+                    }
+                }
+            } else {
+                System.out.println("Can not find supplier id. try again!\n");
+                continue L1;
+            }
+        }
+    }
+
+    public static boolean is_exist_category(String name) {
         for (int i = 0; i < category.length; i++) {
-            if (category[i].equals(id)) {
+            if (category[i].equals(name)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static void ungrow_category(String id){
-        String []temp = new String[category.length-1];
-        
+    public static void ungrow_category(String id) {
+        String[] temp = new String[category.length - 1];
+
         int j = 0;
         for (int i = 0; i < temp.length; i++) {
             if (category[i].equals(id)) {
                 j++;
-                continue;    
-            }else{
-                temp[i-j] = category[i]; 
+                continue;
+            } else {
+                temp[i - j] = category[i];
             }
 
-        } 
+        }
 
         category = temp;
     }
 
     public static void deleteItem_Category() {
         Scanner input = new Scanner(System.in);
-		
-		clearConsole();
-		
-		System.out.println("+--------------------------------------------------------------------------+");
-		System.out.println("|                           DELETE ITEM CATEGORY                           |");
-		System.out.println("+--------------------------------------------------------------------------+\n");
+
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                           DELETE ITEM CATEGORY                           |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
 
         L1: while (true) {
             System.out.print("Category name: ");
-            String id = input.nextLine();
+            String name = input.nextLine();
 
-            boolean is_exist_id = is_exist_category_id(id);
+            boolean is_exist_id = is_exist_category(name);
 
             if (is_exist_id) {
-                ungrow_category(id);
+                ungrow_category(name);
 
                 L2: while (true) {
                     System.out.print("delete successfully! . Do you want to delete another? (Y/N)");
@@ -561,10 +592,10 @@ class Coursework {
             boolean is_exist_category = is_exist_category(name);
 
             if (!is_exist_category) {
-                
+
                 grow_category(name);
 
-                L2:while (true) {
+                L2: while (true) {
                     System.out.print("added successfully! Do you want to add another category (Y/N)? ");
                     char option = input.next().charAt(0);
 
