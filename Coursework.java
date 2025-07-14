@@ -134,7 +134,7 @@ class Coursework {
                 case 1 -> addSupplier();
                 case 2 -> updateSupplier();
                 case 3 -> deleteSupplier();
-                // case 4 -> viewSupplier();
+                case 4 -> viewSupplier();
                 case 5 -> searchSupplier();
                 case 6 -> home();
                 default -> {
@@ -183,9 +183,30 @@ class Coursework {
         }
     }
 
-    // public static void viewSupplier() {
+    public static void viewSupplier() {
+        clearConsole();
 
-    // }
+        System.out.println("+--------------------------------------------------------------------------+");
+        
+        String title = "VIEW SUPPLIER";
+        int boxWidth = 74;
+        int padding = (boxWidth - title.length()) / 2;
+        String line = String.format("|%" + (padding + title.length()) + "s%" + (boxWidth - padding - title.length()) + "s|\n", title, "");
+        System.out.print(line);
+
+        System.out.println("+--------------------------------------------------------------------------+");
+
+        System.out.println("+-----------------------+------------------------+");
+        System.out.printf("| %-21s | %-22s |\n", "SUPPLIER ID", "SUPPLIER NAME");   // Left width align
+        System.out.println("+-----------------------+------------------------+");
+        
+        for (int i = 0; i < supplier.length; i++) {
+            System.out.printf("| %-21s | %-22s |\n", supplier[i][0], supplier[i][1]);
+        }
+        
+        System.out.println("+-----------------------+------------------------+");
+
+    }
 
     public static void deleteSupplier() {
         Scanner input = new Scanner(System.in);
@@ -427,6 +448,13 @@ class Coursework {
     }
 
     public static void add_Item() {
+        Scanner input = new Scanner(System.in);
+
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                                 ADD ITEM                                 |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
 
     }
 
@@ -683,6 +711,6 @@ class Coursework {
 
     public static void main(String[] args) {
         // login();
-        stock_Manage();
+        supplier_Manage();
     }
 }
