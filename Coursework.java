@@ -6,6 +6,9 @@ class Coursework {
     static String user_Password = "1234";
     static String[][] supplier = new String[0][2];
     static String[] category = new String[0];
+    static String[][] item = new String[0][4];
+    static int[] qty = new int[0];
+    static double[] price = new double[0];
 
     public static final void clearConsole() {
         final String os = System.getProperty("os.name");
@@ -37,7 +40,6 @@ class Coursework {
         }
 
         category = temp;
-        System.out.println(Arrays.deepToString(category));
     }
 
     public static void ungrow_supplier(String id) {
@@ -119,7 +121,7 @@ class Coursework {
         clearConsole();
 
         System.out.println("+--------------------------------------------------------------------------+");
-        System.out.println("|                         SUPLIAR MANAGE                                   |");
+        System.out.println("|                           SUPLIAR MANAGE                                 |");
         System.out.println("+--------------------------------------------------------------------------+\n");
 
         System.out.println("[1] Add Suppliar\t [2] Update Suppliar");
@@ -184,27 +186,44 @@ class Coursework {
     }
 
     public static void viewSupplier() {
+        Scanner input = new Scanner(System.in);
+
         clearConsole();
 
         System.out.println("+--------------------------------------------------------------------------+");
-        
+
         String title = "VIEW SUPPLIER";
         int boxWidth = 74;
         int padding = (boxWidth - title.length()) / 2;
-        String line = String.format("|%" + (padding + title.length()) + "s%" + (boxWidth - padding - title.length()) + "s|\n", title, "");
+        String line = String.format(
+                "|%" + (padding + title.length()) + "s%" + (boxWidth - padding - title.length()) + "s|\n", title, "");
         System.out.print(line);
 
         System.out.println("+--------------------------------------------------------------------------+");
 
         System.out.println("+-----------------------+------------------------+");
-        System.out.printf("| %-21s | %-22s |\n", "SUPPLIER ID", "SUPPLIER NAME");   // Left width align
+        System.out.printf("| %-21s | %-22s |\n", "SUPPLIER ID", "SUPPLIER NAME"); // Left width align
         System.out.println("+-----------------------+------------------------+");
-        
+
         for (int i = 0; i < supplier.length; i++) {
             System.out.printf("| %-21s | %-22s |\n", supplier[i][0], supplier[i][1]);
         }
-        
+
         System.out.println("+-----------------------+------------------------+");
+
+        while (true) {
+            System.out.print("Do you want to go supplier manage page(Y/N)? ");
+            char option = input.next().charAt(0);
+
+            switch (option) {
+                case 'y', 'Y' -> supplier_Manage();
+                case 'n', 'N' -> home();
+                default -> {
+                    System.out.println("Invalid option. Please try again! ");
+                    continue;
+                }
+            }
+        }
 
     }
 
@@ -447,6 +466,89 @@ class Coursework {
 
     }
 
+    public static boolean exist_suppiler() {
+        for (int i = 0; i < supplier.length; i++) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean exist_category() {
+        for (int i = 0; i < category.length; i++) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean is_exist_item_code(String code) {
+        for (int i = 0; i < item.length; i++) {
+            if (item[i][0].equals(code)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void item_grow(String code, String catogery, String supplier, String description) {
+        String[][] temp = new String[item.length + 1][4];
+
+        for (int i = 0; i < item.length; i++) {
+            temp[i][0] = item[i][0];
+            temp[i][1] = item[i][1];
+            temp[i][2] = item[i][2];
+            temp[i][3] = item[i][3];
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i][0] == null) {
+                temp[i][0] = code;
+                temp[i][1] = catogery;
+                temp[i][2] = supplier;
+                temp[i][3] = description;
+            }
+        }
+
+        item = temp;
+
+        System.out.println(Arrays.deepToString(item));
+    }
+
+    public static void qty_grow(int value) {
+        int[] temp = new int[qty.length + 1];
+
+        for (int i = 0; i < qty.length; i++) {
+            temp[i] = qty[i];
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i] == 0) {
+                temp[i] = value;
+            }
+        }
+
+        qty = temp;
+
+        System.out.println(Arrays.toString(qty));
+    }
+
+    public static void price_grow(double value) {
+        double[] temp = new double[price.length + 1];
+
+        for (int i = 0; i < price.length; i++) {
+            temp[i] = price[i];
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i] == 0.0) {
+                temp[i] = value;
+            }
+        }
+
+        price = temp;
+
+        System.out.println(Arrays.toString(price));
+    }
+
     public static void add_Item() {
         Scanner input = new Scanner(System.in);
 
@@ -456,6 +558,154 @@ class Coursework {
         System.out.println("|                                 ADD ITEM                                 |");
         System.out.println("+--------------------------------------------------------------------------+\n");
 
+        if (exist_category()) {
+
+            if (exist_suppiler()) {
+
+                L1: while (true) {
+                    System.out.print("Item code: ");
+                    String code = input.nextLine();
+
+                    boolean is_item = is_exist_item_code(code);
+
+                    if (!is_item) {
+
+                        System.out.println("\nSupplier List: ");
+
+                        System.out
+                                .println("+--------------------+-------------------------+-------------------------+");
+                        System.out.printf("| %-18s | %-23s | %-23s |\n", "#", "SUPPLIER ID", "SUPPLIER NAME");
+                        System.out
+                                .println("+--------------------+-------------------------+-------------------------+");
+
+                        for (int i = 0; i < supplier.length; i++) {
+                            System.out.printf("| %-18d | %-23s | %-23s |\n", (i + 1), supplier[i][0], supplier[i][1]);
+                        }
+
+                        System.out.println(
+                                "+--------------------+-------------------------+-------------------------+\n");
+
+                        while (true) {
+                            System.out.print("Enter the supplier number: ");
+                            int sp_num = input.nextInt();
+
+                            if (sp_num <= supplier.length) {
+
+                                for (int i = 0; i < supplier.length; i++) {
+
+                                    if (sp_num == (i + 1)) {
+                                        String supplier_id = supplier[i][0];
+
+                                        System.out.println();
+                                        System.out.println("Item categories:");
+
+                                        System.out.println("+--------------------+-------------------------+");
+                                        System.out.printf("| %-18s | %-23s |\n", "#", "CATEGORY NAME");
+                                        System.out.println("+--------------------+-------------------------+");
+
+                                        for (int j = 0; j < category.length; j++) {
+                                            System.out.printf("| %-18s | %-23s |\n", (j + 1), category[j]);
+                                        }
+
+                                        System.out.println("+--------------------+-------------------------+\n");
+
+                                        while (true) {
+                                            System.out.print("Enter the catogery name: ");
+                                            int cat_num = input.nextInt();
+
+                                            if (cat_num <= category.length) {
+
+                                                for (int j = 0; j < category.length; j++) {
+
+                                                    if (cat_num == (j + 1)) {
+                                                        String catogery_name = category[j];
+
+                                                        System.out.println();
+
+                                                        System.out.print("Description:");
+                                                        String des = input.next();
+
+                                                        System.out.print("Unit price:");
+                                                        double price = input.nextDouble();
+
+                                                        System.out.print("qty On Hand:");
+                                                        int qty = input.nextInt();
+
+                                                        item_grow(code, catogery_name, supplier_id, "hello");
+                                                        qty_grow(qty);
+                                                        price_grow(price);
+
+                                                        while (true) {
+                                                            System.out.print("added successfully! do you want to another Item(Y/N)? ");
+                                                            char option = input.next().charAt(0);
+
+                                                            switch (option) {
+                                                                case 'y', 'Y' -> add_Item();
+                                                                case 'n', 'N' -> stock_Manage();
+                                                                default -> {
+                                                                    System.out.println(
+                                                                            "Invalid option. please try again!\n");
+                                                                    continue;
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            } else {
+                                                System.out.println("Invalid supplier number. please try again!\n");
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                System.out.println("Invalid supplier number. please try again!\n");
+                                continue;
+                            }
+                        }
+
+                    } else {
+                        System.out.println("Already exists. please try again!\n");
+                        continue L1;
+                    }
+                }
+
+            } else {
+                System.out.println("OOPS! It seems that you do not have any supplier in the system");
+
+                while (true) {
+                    System.out.print("Do you want to add a new supplier(Y/N)?");
+                    char option = input.next().charAt(0);
+
+                    switch (option) {
+                        case 'y', 'Y' -> addSupplier();
+                        case 'n', 'N' -> stock_Manage();
+                        default -> {
+                            System.out.println("invalid option. try agian!");
+                            continue;
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("OOPS! It seems that you do not have any item categories in the system");
+
+            while (true) {
+                System.out.print("Do you want to add a new item category(Y/N)?");
+                char option = input.next().charAt(0);
+
+                switch (option) {
+                    case 'y', 'Y' -> addNewItem_Category();
+                    case 'n', 'N' -> stock_Manage();
+                    default -> {
+                        System.out.println("invalid option. try agian!");
+                        continue;
+                    }
+                }
+            }
+
+        }
     }
 
     public static void manageItemCategories() {
@@ -508,7 +758,7 @@ class Coursework {
             System.out.print("Category name: ");
             String name = input.next();
 
-            boolean is_exist = is_exist_category(name);
+            boolean is_exist = is_exist_category_with_name(name);
 
             if (is_exist) {
                 System.out.print("New category name: ");
@@ -538,7 +788,7 @@ class Coursework {
         }
     }
 
-    public static boolean is_exist_category(String name) {
+    public static boolean is_exist_category_with_name(String name) {
         for (int i = 0; i < category.length; i++) {
             if (category[i].equals(name)) {
                 return true;
@@ -577,7 +827,7 @@ class Coursework {
             System.out.print("Category name: ");
             String name = input.nextLine();
 
-            boolean is_exist_id = is_exist_category(name);
+            boolean is_exist_id = is_exist_category_with_name(name);
 
             if (is_exist_id) {
                 ungrow_category(name);
@@ -617,7 +867,7 @@ class Coursework {
             System.out.print("Add new Item category: ");
             String name = input.nextLine();
 
-            boolean is_exist_category = is_exist_category(name);
+            boolean is_exist_category = is_exist_category_with_name(name);
 
             if (!is_exist_category) {
 
@@ -680,9 +930,9 @@ class Coursework {
 
         clearConsole();
 
-        System.out.println("+----------------------------------------------------------------------+");
+        System.out.println("+----------------------------------------------------------------------------+");
         System.out.println("|                              LOGIN PAGE                              |");
-        System.out.println("+----------------------------------------------------------------------+\n");
+        System.out.println("+----------------------------------------------------------------------------+");
 
         L1: while (true) {
             System.out.print("User name: ");
