@@ -111,6 +111,15 @@ class Coursework {
         supplier = temp;
     }
 
+    public static boolean is_exist_item(String id){
+        for (int i = 0; i < item.length; i++) {
+            if (item[i][2].equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void exit_the_System() {
 
     }
@@ -164,6 +173,32 @@ class Coursework {
 
             if (is_exist_id) {
                 System.out.println("Supplier Name: " + getSupplier_by_Id(id));
+
+                boolean is_exist_item = is_exist_item(id);
+                
+                if (is_exist_item) {
+                    System.out.println(
+                            "\n+-----------------+-----------------+-----------------+-----------------+-----------------+");
+                    System.out.printf("| %-15s | %-15s | %-15s | %-15s | %-15s |\n",
+                            "ITEM CODE", "DESCRIPTION", "UNIT PRICE", "QTY", "CATEGORY");
+                    System.out.println(
+                            "+-----------------+-----------------+-----------------+-----------------+-----------------+");
+
+                    for (int i = 0; i < item.length; i++) {
+                        if (item[i][2].equals(id)) {
+                            System.out.printf("| %-15s | %-15s | %-15.2f | %-15d | %-15s |\n",
+                                    item[i][0],
+                                    item[i][3],
+                                    price[i],
+                                    qty[i],
+                                    item[i][1]);
+                        }
+                    }
+
+                    System.out.println(
+                            "+-----------------+-----------------+-----------------+-----------------+-----------------+");
+
+                }
 
                 L2: while (true) {
                     System.out.print("successfully !. Do you want to search another supplier (Y/N) > ");
@@ -494,8 +529,7 @@ class Coursework {
                                 item[i][3],
                                 price[i],
                                 qty[i],
-                                item[i][1]
-                        );
+                                item[i][1]);
                     }
                 }
 
@@ -507,7 +541,7 @@ class Coursework {
                     char option = input.next().charAt(0);
 
                     switch (option) {
-                        case 'y', 'Y' -> getItemSupplierWise();
+                        case 'y', 'Y' -> searchSupplier();
                         case 'n', 'N' -> stock_Manage();
                         default -> {
                             System.out.println("Invalid option. Please try again!\n");
