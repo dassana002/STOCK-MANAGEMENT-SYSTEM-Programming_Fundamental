@@ -463,7 +463,64 @@ class Coursework {
     }
 
     public static void getItemSupplierWise() {
+        Scanner input = new Scanner(System.in);
 
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                       SEARCH ITEMS SUPPLIER WISE                         |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        while (true) {
+            System.out.print("Enter the suppllier Id: ");
+            String id = input.next();
+
+            boolean is_true = is_exist_supplier_id(id);
+
+            if (is_true) {
+                System.out.print("Supplier name: " + getSupplier_by_Id(id));
+
+                System.out.println(
+                        "\n+-----------------+-----------------+-----------------+-----------------+-----------------+");
+                System.out.printf("| %-15s | %-15s | %-15s | %-15s | %-15s |\n",
+                        "ITEM CODE", "DESCRIPTION", "UNIT PRICE", "QTY", "CATEGORY");
+                System.out.println(
+                        "+-----------------+-----------------+-----------------+-----------------+-----------------+");
+
+                for (int i = 0; i < item.length; i++) {
+                    if (item[i][2].equals(id)) {
+                        System.out.printf("| %-15s | %-15s | %-15.2f | %-15d | %-15s |\n",
+                                item[i][0],
+                                item[i][3],
+                                price[i],
+                                qty[i],
+                                item[i][1]
+                        );
+                    }
+                }
+
+                System.out.println(
+                        "+-----------------+-----------------+-----------------+-----------------+-----------------+");
+
+                while (true) {
+                    System.out.print("Search successfully. Do you want to another search? (Y/N) ");
+                    char option = input.next().charAt(0);
+
+                    switch (option) {
+                        case 'y', 'Y' -> getItemSupplierWise();
+                        case 'n', 'N' -> stock_Manage();
+                        default -> {
+                            System.out.println("Invalid option. Please try again!\n");
+                            continue;
+                        }
+                    }
+                }
+
+            } else {
+                System.out.println("Enter the Invaild supplier Id. please try again!");
+                continue;
+            }
+        }
     }
 
     public static boolean exist_suppiler() {
@@ -612,6 +669,7 @@ class Coursework {
                                         while (true) {
                                             System.out.print("Enter the catogery name: ");
                                             int cat_num = input.nextInt();
+                                            input.nextLine();
 
                                             if (cat_num <= category.length) {
 
@@ -623,20 +681,21 @@ class Coursework {
                                                         System.out.println();
 
                                                         System.out.print("Description:");
-                                                        String des = input.next();
+                                                        String des = input.nextLine();
 
                                                         System.out.print("Unit price:");
-                                                        double price = input.nextDouble();
+                                                        double price = Double.parseDouble(input.nextLine());
 
                                                         System.out.print("qty On Hand:");
-                                                        int qty = input.nextInt();
+                                                        int qty = Integer.parseInt(input.nextLine());
 
-                                                        item_grow(code, catogery_name, supplier_id, "hello");
+                                                        item_grow(code, catogery_name, supplier_id, des);
                                                         qty_grow(qty);
                                                         price_grow(price);
 
                                                         while (true) {
-                                                            System.out.print("added successfully! do you want to another Item(Y/N)? ");
+                                                            System.out.print(
+                                                                    "added successfully! do you want to another Item(Y/N)? ");
                                                             char option = input.next().charAt(0);
 
                                                             switch (option) {
