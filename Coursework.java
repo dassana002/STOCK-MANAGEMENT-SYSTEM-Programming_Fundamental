@@ -111,7 +111,7 @@ class Coursework {
         supplier = temp;
     }
 
-    public static boolean is_exist_item(String id){
+    public static boolean is_exist_item(String id) {
         for (int i = 0; i < item.length; i++) {
             if (item[i][2].equals(id)) {
                 return true;
@@ -175,7 +175,7 @@ class Coursework {
                 System.out.println("Supplier Name: " + getSupplier_by_Id(id));
 
                 boolean is_exist_item = is_exist_item(id);
-                
+
                 if (is_exist_item) {
                     System.out.println(
                             "\n+-----------------+-----------------+-----------------+-----------------+-----------------+");
@@ -490,7 +490,110 @@ class Coursework {
     }
 
     public static void view_Item() {
+        Scanner input = new Scanner(System.in);
 
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                                VIEW ITEMS                                |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        if (supplier.length != 0) {
+
+            if (category.length != 0) {
+
+                if (item.length != 0) {
+                    for (int i = 0; i < category.length; i++) {
+                        System.out.println(category[i] + ":");
+
+                        System.out.println(
+                                "\n+-----------------+-----------------+-----------------+-----------------+-----------------+");
+                        System.out.printf("| %-15s | %-15s | %-15s | %-15s | %-15s |\n",
+                                "S_ID", "CODE", "DESC", "PRICE", "QTY");
+                        System.out.println(
+                                "+-----------------+-----------------+-----------------+-----------------+-----------------+");
+
+                        for (int j = 0; j < item.length; j++) {
+                            if (item[j][1].equals(category[i])) {
+                                System.out.printf("| %-15s | %-15s | %-15s | %-15.2f | %-15d|\n",
+                                    item[j][2],
+                                    item[j][0],
+                                    item[j][3],
+                                    price[j],
+                                    qty[j]);
+                            }
+                        }
+                        System.out.println(
+                                "+-----------------+-----------------+-----------------+-----------------+-----------------+\n");
+
+                    }
+
+                    while (true) {
+                        System.out.print("Do you want to stock manage page(Y/N)? ");
+                        char option = input.next().charAt(0);
+
+                        switch (option) {
+                            case 'y', 'Y' -> stock_Manage();
+                            case 'n', 'N' -> home();
+                            default -> {
+                                System.out.println("invalid option. try agian!\n");
+                                continue;
+                            }
+                        }
+                    }
+
+                } else {
+                    System.out.println("OOPS! It seems that you do not have any item in the system");
+
+                    while (true) {
+                        System.out.print("Do you want to add a new item (Y/N)?");
+                        char option = input.next().charAt(0);
+
+                        switch (option) {
+                            case 'y', 'Y' -> add_Item();
+                            case 'n', 'N' -> stock_Manage();
+                            default -> {
+                                System.out.println("invalid option. try agian!\n");
+                                continue;
+                            }
+                        }
+                    }
+                }
+            } else {
+                System.out.println("OOPS! It seems that you do not have any item categories in the system");
+
+                while (true) {
+                    System.out.print("Do you want to add a new item category(Y/N)?");
+                    char option = input.next().charAt(0);
+
+                    switch (option) {
+                        case 'y', 'Y' -> addNewItem_Category();
+                        case 'n', 'N' -> stock_Manage();
+                        default -> {
+                            System.out.println("invalid option. try agian!\n");
+                            continue;
+                        }
+                    }
+                }
+            }
+
+        } else {
+            System.out.println("OOPS! It seems that you do not have any supplier in the system");
+
+            while (true) {
+                System.out.print("Do you want to add a new supplier(Y/N)?");
+                char option = input.next().charAt(0);
+
+                switch (option) {
+                    case 'y', 'Y' -> addSupplier();
+                    case 'n', 'N' -> stock_Manage();
+                    default -> {
+                        System.out.println("invalid option. try agian!\n");
+                        continue;
+                    }
+                }
+            }
+        }
     }
 
     public static void ItemPerUnitPrice() {
@@ -600,8 +703,6 @@ class Coursework {
         }
 
         item = temp;
-
-        System.out.println(Arrays.deepToString(item));
     }
 
     public static void qty_grow(int value) {
@@ -619,7 +720,6 @@ class Coursework {
 
         qty = temp;
 
-        System.out.println(Arrays.toString(qty));
     }
 
     public static void price_grow(double value) {
@@ -637,7 +737,6 @@ class Coursework {
 
         price = temp;
 
-        System.out.println(Arrays.toString(price));
     }
 
     public static void add_Item() {
