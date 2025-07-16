@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 class Coursework {
@@ -137,6 +136,13 @@ class Coursework {
     }
 
     public static void exit_the_System() {
+        clearConsole();
+        Scanner input = new Scanner(System.in);
+        System.out.println("------------------");
+        System.out.println("(program exited with code: 0)");
+        System.out.println("Press return to continue");
+        String x = input.nextLine();
+        home();
 
     }
 
@@ -667,18 +673,17 @@ class Coursework {
                     item[index][3], // DESC
                     price[index], // PRICE
                     qty[index] // QTY
-            ); 
+            );
 
             for (int i = 0; i < category.length; i++) {
                 if (item[i][2].equals(item[index][2])) {
-                    System.out.printf("%-12s|\n",item[index][1]);// CATEGORY
+                    System.out.printf("%-12s|\n", item[index][1]);// CATEGORY
                 }
             }
 
         }
 
-        System.out.println
-                ("+-------+-------+----------------------+------------+-------+------------+");
+        System.out.println("+-------+-------+----------------------+------------+-------+------------+");
 
     }
 
@@ -740,20 +745,6 @@ class Coursework {
                 continue;
             }
         }
-    }
-
-    public static boolean exist_suppiler() {
-        for (int i = 0; i < supplier.length; i++) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean exist_category() {
-        for (int i = 0; i < category.length; i++) {
-            return true;
-        }
-        return false;
     }
 
     public static boolean is_exist_item_code(String code) {
@@ -830,9 +821,9 @@ class Coursework {
         System.out.println("|                                 ADD ITEM                                 |");
         System.out.println("+--------------------------------------------------------------------------+\n");
 
-        if (exist_category()) {
+        if (category.length != 0) {
 
-            if (exist_suppiler()) {
+            if (supplier.length != 0) {
 
                 L1: while (true) {
                     System.out.print("Item code: ");
