@@ -4,11 +4,27 @@ import java.util.Scanner;
 class Coursework {
     static String user_Name = "1234";
     static String user_Password = "1234";
-    static String[][] supplier = new String[0][2];
-    static String[] category = new String[0];
-    static String[][] item = new String[0][4];
-    static int[] qty = new int[0];
-    static double[] price = new double[0];
+
+    // static String[][] supplier = new String[0][2];
+    static String[][] supplier = { { "s001", "dassana" }, { "s002", "amandi" }, { "s003", "tharushi" },
+            { "s004", "shashi" } };
+
+    // static String[] category = new String[0];
+    static String[] category = { "biscult", "shoose", "bag" };
+
+    // static String[][] item = new String[0][4];
+    static String[][] item = {
+            { "I001", "biscult", "s001", "Maliban Biscult" },
+            { "I002", "shoose", "s003", "Adidas" },
+            { "I003", "biscult", "s004", "Manchee comee" },
+            { "I004", "shoose", "s001", "Grenical" }
+    };
+
+    // static int[] qty = new int[0];
+    static int[] qty = { 12, 44, 66, 23 };
+
+    // static double[] price = new double[0];
+    static double[] price = { 230.0, 5600.0, 150.0, 11000.0 };
 
     public static final void clearConsole() {
         final String os = System.getProperty("os.name");
@@ -479,7 +495,7 @@ class Coursework {
                 case '2' -> add_Item();
                 case '3' -> getItemSupplierWise();
                 case '4' -> view_Item();
-                case '5' -> ItemPerUnitPrice();
+                case '5' -> item_Ranking();
                 case '6' -> home();
                 default -> {
                     System.out.println("Invalid option! Please try again.");
@@ -516,11 +532,11 @@ class Coursework {
                         for (int j = 0; j < item.length; j++) {
                             if (item[j][1].equals(category[i])) {
                                 System.out.printf("| %-15s | %-15s | %-15s | %-15.2f | %-15d|\n",
-                                    item[j][2],
-                                    item[j][0],
-                                    item[j][3],
-                                    price[j],
-                                    qty[j]);
+                                        item[j][2],
+                                        item[j][0],
+                                        item[j][3],
+                                        price[j],
+                                        qty[j]);
                             }
                         }
                         System.out.println(
@@ -596,7 +612,73 @@ class Coursework {
         }
     }
 
-    public static void ItemPerUnitPrice() {
+    public static void item_Ranking() {
+        Scanner input = new Scanner(System.in);
+
+        clearConsole();
+
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("|                             RANKED UNIT PRICE                            |");
+        System.out.println("+--------------------------------------------------------------------------+\n");
+
+        double[] temp_price = new double[price.length];
+        int[] ranking = new int[price.length];
+
+        // ranking initailization
+        for (int i = 0; i < price.length; i++) {
+            ranking[i] = i;
+        }
+
+        // price sorting
+        for (int i = 0; i < temp_price.length; i++) {
+            temp_price[i] = price[i];
+        }
+
+        for (int i = 0; i < price.length - 1; i++) {
+            for (int j = 0; j < price.length - i - 1; j++) {
+
+                if (temp_price[j] > temp_price[j + 1]) {
+
+                    double temp = temp_price[j];
+                    temp_price[j] = temp_price[j + 1];
+                    temp_price[j + 1] = temp;
+
+                    // ranking set
+                    int temp2 = ranking[j];
+                    ranking[j] = ranking[j + 1];
+                    ranking[j + 1] = temp2;
+                }
+            }
+        }
+
+        System.out.println(
+                "\n+-------+-------+----------------------+------------+-------+------------+");
+        System.out.printf("| %-5s | %-5s | %-20s | %-10s | %-5s | %-10s |\n",
+                "S_ID", "CODE", "DESC", "PRICE", "QTY", "CATEGORY");
+        System.out.println(
+                "+-------+-------+----------------------+------------+-------+------------+");
+
+        for (int j = 0; j < ranking.length; j++) {
+            int index = ranking[j];
+
+            System.out.printf("| %-5s | %-5s | %-20s | %-10.2f | %-5d |",
+                    item[index][2], // S_ID
+                    item[index][0], // CODE
+                    item[index][3], // DESC
+                    price[index], // PRICE
+                    qty[index] // QTY
+            ); 
+
+            for (int i = 0; i < category.length; i++) {
+                if (item[i][2].equals(item[index][2])) {
+                    System.out.printf("%-12s|\n",item[index][1]);// CATEGORY
+                }
+            }
+
+        }
+
+        System.out.println
+                ("+-------+-------+----------------------+------------+-------+------------+");
 
     }
 
@@ -1152,7 +1234,6 @@ class Coursework {
     }
 
     public static void main(String[] args) {
-        // login();
-        supplier_Manage();
+        login();
     }
 }
